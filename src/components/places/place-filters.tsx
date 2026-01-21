@@ -63,10 +63,10 @@ const amenities: { value: AmenityType; label: string; icon: string }[] = [
 ];
 
 const changingLocations = [
-  { value: "mens", label: "Men's Room" },
-  { value: "womens", label: "Women's Room" },
-  { value: "family", label: "Family Room" },
-  { value: "unisex", label: "Unisex" },
+  { value: "mens", label: "Men's Room", emoji: "👨", description: "Dad-friendly!" },
+  { value: "womens", label: "Women's Room", emoji: "👩", description: "" },
+  { value: "family", label: "Family Room", emoji: "👨‍👩‍👧", description: "All welcome" },
+  { value: "unisex", label: "Unisex", emoji: "🚻", description: "" },
 ];
 
 const noiseLevels: { value: NoiseLevel; label: string }[] = [
@@ -219,14 +219,21 @@ export function PlaceFilters({
 
         <Separator />
 
-        {/* Changing Station Location */}
-        <div>
-          <h3 className="font-semibold mb-3">Changing Station In</h3>
-          <div className="flex flex-wrap gap-2">
+        {/* Changing Station Location - Key Feature! */}
+        <div className="bg-blue-50 dark:bg-blue-950/30 -mx-4 px-4 py-4 rounded-lg">
+          <h3 className="font-semibold mb-1 flex items-center gap-2">
+            <Baby className="h-4 w-4 text-blue-600" />
+            Changing Table Location
+          </h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            Find places where dads can change diapers too!
+          </p>
+          <div className="grid grid-cols-2 gap-2">
             {changingLocations.map((location) => {
               const isActive = filters.changing_station_location?.includes(
                 location.value as "mens" | "womens" | "family" | "unisex"
               );
+              const isMens = location.value === "mens";
               return (
                 <button
                   key={location.value}
@@ -241,13 +248,26 @@ export function PlaceFilters({
                     });
                   }}
                   className={cn(
-                    "px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
+                    "flex flex-col items-center gap-1 p-3 rounded-xl text-sm font-medium transition-all",
                     isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted hover:bg-muted/80"
+                      ? isMens
+                        ? "bg-blue-600 text-white ring-2 ring-blue-300"
+                        : "bg-primary text-primary-foreground"
+                      : isMens
+                        ? "bg-blue-100 dark:bg-blue-900/50 hover:bg-blue-200 border-2 border-blue-300"
+                        : "bg-muted hover:bg-muted/80"
                   )}
                 >
-                  {location.label}
+                  <span className="text-lg">{location.emoji}</span>
+                  <span className="text-xs">{location.label}</span>
+                  {location.description && (
+                    <span className={cn(
+                      "text-[10px]",
+                      isActive ? "text-white/80" : "text-muted-foreground"
+                    )}>
+                      {location.description}
+                    </span>
+                  )}
                 </button>
               );
             })}
