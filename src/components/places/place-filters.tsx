@@ -312,11 +312,11 @@ export function PlaceFilters({
         <div>
           <h3 className="font-semibold mb-3">Minimum Rating</h3>
           <Select
-            value={filters.min_rating?.toString() || ""}
+            value={filters.min_rating?.toString() || "any"}
             onValueChange={(value) =>
               onFiltersChange({
                 ...filters,
-                min_rating: value ? parseFloat(value) : undefined,
+                min_rating: value && value !== "any" ? parseFloat(value) : undefined,
               })
             }
           >
@@ -324,7 +324,7 @@ export function PlaceFilters({
               <SelectValue placeholder="Any rating" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Any rating</SelectItem>
+              <SelectItem value="any">Any rating</SelectItem>
               <SelectItem value="3">3+ stars</SelectItem>
               <SelectItem value="3.5">3.5+ stars</SelectItem>
               <SelectItem value="4">4+ stars</SelectItem>
