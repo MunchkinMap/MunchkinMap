@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 import { MAPBOX_ACCESS_TOKEN, MAP_STYLES, DEFAULT_CENTER, DEFAULT_ZOOM } from "@/lib/mapbox";
 import type { Place } from "@/types";
+import { MapPin } from "lucide-react";
 
 interface MapViewProps {
   places?: Place[];
@@ -27,12 +26,22 @@ export function MapView({
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapboxgl, setMapboxgl] = useState<typeof import("mapbox-gl") | null>(null);
+
+  // Dynamically import mapbox-gl only on client
+  useEffect(() => {
+    if (!MAPBOX_ACCESS_TOKEN) return;
+
+    import("mapbox-gl").then((module) => {
+      setMapboxgl(module.default as unknown as typeof import("mapbox-gl"));
+    });
+  }, []);
 
   // Initialize map
   useEffect(() => {
-    if (!mapContainer.current || map.current) return;
+    if (!mapContainer.current || map.current || !mapboxgl || !MAPBOX_ACCESS_TOKEN) return;
 
-    mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
+    (mapboxgl as unknown as { accessToken: string }).accessToken = MAPBOX_ACCESS_TOKEN;
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -61,11 +70,11 @@ export function MapView({
       map.current?.remove();
       map.current = null;
     };
-  }, [center, zoom]);
+  }, [center, zoom, mapboxgl]);
 
   // Update markers when places change
   useEffect(() => {
-    if (!map.current || !mapLoaded) return;
+    if (!map.current || !mapLoaded || !mapboxgl) return;
 
     // Clear existing markers
     markers.current.forEach((marker) => marker.remove());
@@ -98,7 +107,7 @@ export function MapView({
 
       markers.current.push(marker);
     });
-  }, [places, mapLoaded, onPlaceSelect, selectedPlaceId]);
+  }, [places, mapLoaded, onPlaceSelect, selectedPlaceId, mapboxgl]);
 
   // Update center when it changes
   useEffect(() => {
@@ -120,7 +129,21 @@ export function MapView({
     }
   }, [selectedPlaceId, places, mapLoaded]);
 
+  // If no Mapbox token, show placeholder
+  if (!MAPBOX_ACCESS_TOKEN) {
+    return (
+      <div className={`w-full h-full min-h-[200px] bg-parchment flex flex-col items-center justify-center text-muted-foreground rounded-xl ${className}`}>
+        <MapPin className="h-12 w-12 mb-3 text-terracotta/40" />
+        <p className="text-sm font-medium">Map unavailable</p>
+        <p className="text-xs">Configure Mapbox to enable maps</p>
+      </div>
+    );
+  }
+
   return (
-    <div ref={mapContainer} className={`w-full h-full min-h-[400px] ${className}`} />
+    <>
+      <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet" />
+      <div ref={mapContainer} className={`w-full h-full min-h-[200px] ${className}`} />
+    </>
   );
 }
