@@ -151,7 +151,9 @@ export default function HomePage() {
             {/* Main headline */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-semibold tracking-tight mb-6 leading-[1.1] animate-fade-up stagger-1">
               <span className="block">Family adventures</span>
-              <span className="block text-gradient-warm underline-hand">start here</span>
+              <span className="block underline-hand">
+                <span className="text-gradient-warm">start here</span>
+              </span>
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-3 max-w-2xl mx-auto animate-fade-up stagger-2 leading-relaxed">

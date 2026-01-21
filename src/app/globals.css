@@ -211,15 +211,24 @@ h1, h2, h3 {
   background-clip: text;
 }
 
-/* Hand-drawn underline effect */
+/* Hand-drawn underline effect - uses ::after to avoid conflicting with gradient text */
 .underline-hand {
   position: relative;
   display: inline;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12'%3E%3Cpath d='M2 8 Q 40 2, 80 7 T 160 6 T 198 8' fill='none' stroke='%23C4845C' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+  padding-bottom: 12px;
+}
+
+.underline-hand::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12'%3E%3Cpath d='M2 8 Q 40 2, 80 7 T 160 6 T 198 8' fill='none' stroke='%23C4845C' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: bottom;
-  background-size: 100% 12px;
-  padding-bottom: 8px;
+  background-position: center bottom;
+  background-size: 100% 14px;
 }
 
 .highlight-soft {
