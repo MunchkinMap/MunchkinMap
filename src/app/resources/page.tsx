@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button, Card, CardContent, Badge, Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui";
+import { Button, Card, CardContent, Badge } from "@/components/ui";
 import type { Article, ArticleCategory } from "@/types";
 import {
   BookOpen,
@@ -11,7 +11,6 @@ import {
   Eye,
   ChevronRight,
   Loader2,
-  Baby,
   Moon,
   Heart,
   Stethoscope,
@@ -22,21 +21,22 @@ import {
   Sparkles,
   Brain,
   Utensils,
+  ArrowRight,
 } from "lucide-react";
 
 const categoryInfo: Record<ArticleCategory, { label: string; icon: React.ElementType; color: string }> = {
-  feeding: { label: "Feeding", icon: Utensils, color: "bg-orange-100 text-orange-800" },
-  sleep: { label: "Sleep", icon: Moon, color: "bg-indigo-100 text-indigo-800" },
-  development: { label: "Development", icon: Brain, color: "bg-purple-100 text-purple-800" },
-  health: { label: "Health", icon: Stethoscope, color: "bg-red-100 text-red-800" },
-  activities: { label: "Activities", icon: Sparkles, color: "bg-yellow-100 text-yellow-800" },
-  travel: { label: "Travel", icon: Plane, color: "bg-sky-100 text-sky-800" },
-  gear: { label: "Gear", icon: ShoppingBag, color: "bg-emerald-100 text-emerald-800" },
-  parenting_tips: { label: "Parenting Tips", icon: Lightbulb, color: "bg-amber-100 text-amber-800" },
-  dad_life: { label: "Dad Life", icon: Users, color: "bg-blue-100 text-blue-800" },
-  mom_life: { label: "Mom Life", icon: Heart, color: "bg-pink-100 text-pink-800" },
-  relationships: { label: "Relationships", icon: Users, color: "bg-rose-100 text-rose-800" },
-  mental_health: { label: "Mental Health", icon: Brain, color: "bg-teal-100 text-teal-800" },
+  feeding: { label: "Feeding", icon: Utensils, color: "bg-honey/10 text-honey border-honey/20" },
+  sleep: { label: "Sleep", icon: Moon, color: "bg-plum/10 text-plum border-plum/20" },
+  development: { label: "Development", icon: Brain, color: "bg-terracotta/10 text-terracotta border-terracotta/20" },
+  health: { label: "Health", icon: Stethoscope, color: "bg-destructive/10 text-destructive border-destructive/20" },
+  activities: { label: "Activities", icon: Sparkles, color: "bg-honey/10 text-honey border-honey/20" },
+  travel: { label: "Travel", icon: Plane, color: "bg-sky/10 text-sky border-sky/20" },
+  gear: { label: "Gear", icon: ShoppingBag, color: "bg-sage/10 text-sage border-sage/20" },
+  parenting_tips: { label: "Parenting Tips", icon: Lightbulb, color: "bg-honey/10 text-honey border-honey/20" },
+  dad_life: { label: "Dad Life", icon: Users, color: "bg-sky/10 text-sky border-sky/20" },
+  mom_life: { label: "Mom Life", icon: Heart, color: "bg-terracotta-light/10 text-terracotta-light border-terracotta-light/20" },
+  relationships: { label: "Relationships", icon: Users, color: "bg-plum/10 text-plum border-plum/20" },
+  mental_health: { label: "Mental Health", icon: Brain, color: "bg-sage/10 text-sage border-sage/20" },
 };
 
 // Mock articles for demo - in production, fetch from API
@@ -130,8 +130,8 @@ function ArticleCard({ article, featured = false }: { article: Article; featured
   if (featured) {
     return (
       <Link href={`/resources/${article.slug}`}>
-        <Card className="overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 h-full">
-          <div className="relative aspect-[16/9] bg-gradient-sunset">
+        <div className="card-storybook overflow-hidden h-full group">
+          <div className="relative aspect-[16/9] bg-gradient-hero">
             {article.cover_image ? (
               <Image
                 src={article.cover_image}
@@ -141,18 +141,20 @@ function ArticleCard({ article, featured = false }: { article: Article; featured
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <CategoryIcon className="h-16 w-16 text-coral/30" />
+                <CategoryIcon className="h-16 w-16 text-terracotta/20" />
               </div>
             )}
             <div className="absolute top-3 left-3">
-              <Badge className={categoryData.color}>
+              <Badge className={`${categoryData.color} border`}>
                 <CategoryIcon className="h-3 w-3 mr-1" />
                 {categoryData.label}
               </Badge>
             </div>
           </div>
           <CardContent className="p-5">
-            <h3 className="font-semibold text-lg mb-2 line-clamp-2">{article.title}</h3>
+            <h3 className="font-display font-semibold text-lg mb-2 line-clamp-2 group-hover:text-terracotta transition-colors">
+              {article.title}
+            </h3>
             <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{article.excerpt}</p>
             <div className="flex items-center justify-between text-sm text-muted-foreground">
               <div className="flex items-center gap-4">
@@ -165,21 +167,21 @@ function ArticleCard({ article, featured = false }: { article: Article; featured
                   {article.view_count.toLocaleString()}
                 </span>
               </div>
-              <span className="text-primary font-medium flex items-center gap-1">
+              <span className="text-terracotta font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                 Read <ChevronRight className="h-4 w-4" />
               </span>
             </div>
           </CardContent>
-        </Card>
+        </div>
       </Link>
     );
   }
 
   return (
     <Link href={`/resources/${article.slug}`}>
-      <Card className="overflow-hidden hover:shadow-md transition-all">
+      <div className="card-storybook overflow-hidden group">
         <div className="flex">
-          <div className="relative w-32 h-32 flex-shrink-0 bg-gradient-sunset">
+          <div className="relative w-32 h-32 flex-shrink-0 bg-gradient-hero">
             {article.cover_image ? (
               <Image
                 src={article.cover_image}
@@ -189,15 +191,17 @@ function ArticleCard({ article, featured = false }: { article: Article; featured
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <CategoryIcon className="h-10 w-10 text-coral/30" />
+                <CategoryIcon className="h-10 w-10 text-terracotta/20" />
               </div>
             )}
           </div>
           <CardContent className="flex-1 p-4">
-            <Badge variant="outline" className="mb-2 text-xs">
+            <Badge variant="outline" className={`mb-2 text-xs ${categoryData.color} border`}>
               {categoryData.label}
             </Badge>
-            <h3 className="font-semibold mb-1 line-clamp-2">{article.title}</h3>
+            <h3 className="font-display font-semibold mb-1 line-clamp-2 group-hover:text-terracotta transition-colors">
+              {article.title}
+            </h3>
             <div className="flex items-center gap-3 text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5" />
@@ -210,27 +214,15 @@ function ArticleCard({ article, featured = false }: { article: Article; featured
             </div>
           </CardContent>
         </div>
-      </Card>
+      </div>
     </Link>
   );
 }
 
 export default function ResourcesPage() {
-  const [articles, setArticles] = useState<Article[]>(mockArticles);
-  const [loading, setLoading] = useState(false);
+  const [articles] = useState<Article[]>(mockArticles);
+  const [loading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<ArticleCategory | "all">("all");
-
-  // In production, fetch articles from API
-  // useEffect(() => {
-  //   async function fetchArticles() {
-  //     setLoading(true);
-  //     const response = await fetch(`/api/articles${selectedCategory !== "all" ? `?category=${selectedCategory}` : ""}`);
-  //     const data = await response.json();
-  //     setArticles(data.data);
-  //     setLoading(false);
-  //   }
-  //   fetchArticles();
-  // }, [selectedCategory]);
 
   const featuredArticles = articles.filter((a) => a.is_featured);
   const filteredArticles =
@@ -251,18 +243,22 @@ export default function ResourcesPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-cream">
       {/* Hero Section */}
-      <div className="bg-gradient-hero py-16 md:py-24">
-        <div className="container mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 bg-peach/50 rounded-full px-4 py-2 mb-6">
-            <BookOpen className="h-5 w-5 text-coral" />
-            <span className="text-sm font-medium">Parenting Resources</span>
+      <div className="bg-gradient-hero py-16 md:py-24 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-10 right-10 w-32 h-32 bg-honey/10 blob-1 animate-float-gentle" />
+        <div className="absolute bottom-10 left-10 w-24 h-24 bg-sage/10 blob-2 animate-float-slow" />
+
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <div className="badge-soft badge-terracotta inline-flex mb-6">
+            <BookOpen className="h-4 w-4" />
+            Parenting Resources
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-gradient-sunset">Expert Tips</span> for Your Journey
+          <h1 className="text-4xl md:text-5xl font-display font-semibold mb-4">
+            <span className="text-gradient-warm">Expert Tips</span> for Your Journey
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Helpful articles, guides, and resources curated for parents of young children.
           </p>
         </div>
@@ -271,7 +267,7 @@ export default function ResourcesPage() {
       {/* Featured Articles */}
       {featuredArticles.length > 0 && (
         <div className="container mx-auto px-4 -mt-12 relative z-10 mb-12">
-          <h2 className="text-2xl font-bold mb-6">Featured Articles</h2>
+          <h2 className="text-2xl font-display font-semibold mb-6">Featured Articles</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredArticles.slice(0, 3).map((article) => (
               <ArticleCard key={article.id} article={article} featured />
@@ -283,10 +279,10 @@ export default function ResourcesPage() {
       {/* All Articles */}
       <div className="container mx-auto px-4 py-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <h2 className="text-2xl font-bold">All Articles</h2>
+          <h2 className="text-2xl font-display font-semibold">All Articles</h2>
 
           {/* Category Filter */}
-          <div className="flex gap-2 overflow-x-auto pb-2">
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {categories.map((category) => {
               const isAll = category === "all";
               const info = isAll ? null : categoryInfo[category];
@@ -298,7 +294,11 @@ export default function ResourcesPage() {
                   variant={selectedCategory === category ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedCategory(category)}
-                  className="flex-shrink-0"
+                  className={`flex-shrink-0 rounded-full ${
+                    selectedCategory === category
+                      ? "bg-terracotta hover:bg-terracotta/90 text-white"
+                      : "hover:border-terracotta/30"
+                  }`}
                 >
                   {!isAll && <Icon className="h-4 w-4 mr-1.5" />}
                   {isAll ? "All" : info?.label}
@@ -310,7 +310,7 @@ export default function ResourcesPage() {
 
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loader2 className="h-8 w-8 animate-spin text-terracotta" />
           </div>
         ) : filteredArticles.length > 0 ? (
           <div className="grid md:grid-cols-2 gap-4">
@@ -319,35 +319,43 @@ export default function ResourcesPage() {
             ))}
           </div>
         ) : (
-          <Card className="p-12 text-center">
+          <Card className="card-storybook p-12 text-center">
             <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="font-semibold text-lg mb-2">No articles found</h3>
+            <h3 className="font-display font-semibold text-lg mb-2">No articles found</h3>
             <p className="text-muted-foreground mb-4">
               {selectedCategory !== "all"
                 ? "Try selecting a different category."
                 : "Check back soon for new content!"}
             </p>
             {selectedCategory !== "all" && (
-              <Button onClick={() => setSelectedCategory("all")}>View All Articles</Button>
+              <Button
+                onClick={() => setSelectedCategory("all")}
+                className="btn-primary"
+              >
+                View All Articles
+              </Button>
             )}
           </Card>
         )}
       </div>
 
       {/* Newsletter CTA */}
-      <div className="bg-gradient-sunset py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Stay Updated</h2>
-          <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+      <div className="bg-gradient-terracotta py-16">
+        <div className="container mx-auto px-4 text-center text-white">
+          <h2 className="text-2xl md:text-3xl font-display font-semibold mb-4">Stay Updated</h2>
+          <p className="text-white/80 mb-6 max-w-md mx-auto">
             Get the latest parenting tips and resources delivered to your inbox.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 h-11 px-4 rounded-lg border bg-background"
+              className="flex-1 h-12 px-5 rounded-full border-2 border-white/20 bg-white/10 text-white placeholder:text-white/60 focus:outline-none focus:border-white/40 backdrop-blur-sm"
             />
-            <Button>Subscribe</Button>
+            <Button className="h-12 px-6 rounded-full bg-white text-terracotta font-semibold hover:bg-white/90 transition-colors">
+              Subscribe
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
           </div>
         </div>
       </div>

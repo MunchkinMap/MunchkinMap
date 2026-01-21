@@ -26,14 +26,14 @@ import {
   LogOut,
   LayoutDashboard,
   Building2,
-  Sparkles,
+  MapPin,
 } from "lucide-react";
 
 const navigation = [
-  { name: "Explore", href: "/places", emoji: "🗺️" },
-  { name: "Resources", href: "/resources", emoji: "📚" },
-  { name: "Deals", href: "/deals", emoji: "🏷️" },
-  { name: "Community", href: "/community", emoji: "👨‍👩‍👧" },
+  { name: "Explore", href: "/places", icon: MapPin },
+  { name: "Resources", href: "/resources", icon: null },
+  { name: "Deals", href: "/deals", icon: null },
+  { name: "Community", href: "/community", icon: null },
 ];
 
 export function Header() {
@@ -52,15 +52,17 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-lg border-b border-border/50">
+    <header className="sticky top-0 z-50 w-full bg-cream/90 backdrop-blur-md border-b border-border">
       <nav className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="relative h-10 w-10 rounded-2xl bg-gradient-coral flex items-center justify-center shadow-playful group-hover:scale-105 transition-transform">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="relative h-10 w-10 rounded-xl bg-gradient-terracotta flex items-center justify-center shadow-soft group-hover:shadow-medium transition-all group-hover:scale-105">
               <span className="text-xl">👶</span>
             </div>
-            <span className="font-bold text-xl hidden sm:block text-gradient-sunset">MunchkinMap</span>
+            <span className="font-display font-semibold text-xl hidden sm:block text-gradient-warm">
+              MunchkinMap
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -72,13 +74,12 @@ export function Header() {
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-full transition-all",
+                    "px-4 py-2 text-sm font-semibold rounded-full transition-all",
                     isActive
-                      ? "bg-coral/10 text-coral"
-                      : "text-muted-foreground hover:bg-peach hover:text-foreground"
+                      ? "bg-terracotta/10 text-terracotta"
+                      : "text-muted-foreground hover:bg-parchment hover:text-foreground"
                   )}
                 >
-                  <span className="text-base">{item.emoji}</span>
                   {item.name}
                 </Link>
               );
@@ -89,7 +90,11 @@ export function Header() {
           <div className="flex items-center gap-3">
             {/* Search Button */}
             <Link href="/search">
-              <Button variant="ghost" size="icon" className="hidden sm:flex rounded-full hover:bg-peach">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hidden sm:flex rounded-full hover:bg-parchment"
+              >
                 <Search className="h-5 w-5" />
                 <span className="sr-only">Search</span>
               </Button>
@@ -97,24 +102,30 @@ export function Header() {
 
             {/* Auth Section */}
             {isLoading ? (
-              <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
+              <div className="h-10 w-10 rounded-full bg-parchment animate-pulse" />
             ) : user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full ring-2 ring-coral/20 hover:ring-coral/40 p-0">
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full ring-2 ring-terracotta/20 hover:ring-terracotta/40 p-0"
+                  >
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={profile?.avatar_url || ""} alt={profile?.full_name || ""} />
-                      <AvatarFallback className="bg-gradient-coral text-white font-bold">
+                      <AvatarImage
+                        src={profile?.avatar_url || ""}
+                        alt={profile?.full_name || ""}
+                      />
+                      <AvatarFallback className="bg-gradient-terracotta text-white font-semibold">
                         {getInitials(profile?.full_name || null)}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 rounded-2xl p-2" align="end">
-                  <div className="flex items-center gap-3 p-3 bg-peach rounded-xl mb-2">
+                  <div className="flex items-center gap-3 p-3 bg-parchment rounded-xl mb-2">
                     <Avatar className="h-10 w-10">
                       <AvatarImage src={profile?.avatar_url || ""} />
-                      <AvatarFallback className="bg-gradient-coral text-white font-bold text-sm">
+                      <AvatarFallback className="bg-gradient-terracotta text-white font-semibold text-sm">
                         {getInitials(profile?.full_name || null)}
                       </AvatarFallback>
                     </Avatar>
@@ -170,13 +181,15 @@ export function Header() {
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/auth/login">
-                  <Button variant="ghost" className="rounded-full font-semibold hover:bg-peach">
+                  <Button
+                    variant="ghost"
+                    className="rounded-full font-semibold hover:bg-parchment"
+                  >
                     Sign in
                   </Button>
                 </Link>
                 <Link href="/auth/signup" className="hidden sm:block">
-                  <Button className="rounded-full bg-gradient-coral hover:opacity-90 font-semibold shadow-playful">
-                    <Sparkles className="h-4 w-4 mr-1" />
+                  <Button className="btn-primary text-sm">
                     Get Started
                   </Button>
                 </Link>
@@ -187,7 +200,7 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden rounded-full hover:bg-peach"
+              className="md:hidden rounded-full hover:bg-parchment"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -197,7 +210,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t animate-slide-down">
+          <div className="md:hidden py-4 border-t animate-fade-up">
             <div className="flex flex-col gap-1">
               {navigation.map((item) => {
                 const isActive = pathname.startsWith(item.href);
@@ -209,11 +222,10 @@ export function Header() {
                     className={cn(
                       "flex items-center gap-3 px-4 py-3 font-semibold rounded-xl transition-colors",
                       isActive
-                        ? "bg-coral/10 text-coral"
-                        : "text-muted-foreground hover:bg-peach hover:text-foreground"
+                        ? "bg-terracotta/10 text-terracotta"
+                        : "text-muted-foreground hover:bg-parchment hover:text-foreground"
                     )}
                   >
-                    <span className="text-xl">{item.emoji}</span>
                     {item.name}
                   </Link>
                 );
@@ -221,7 +233,7 @@ export function Header() {
               <Link
                 href="/search"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 font-semibold rounded-xl text-muted-foreground hover:bg-peach hover:text-foreground"
+                className="flex items-center gap-3 px-4 py-3 font-semibold rounded-xl text-muted-foreground hover:bg-parchment hover:text-foreground"
               >
                 <Search className="h-5 w-5" />
                 Search

@@ -38,8 +38,8 @@ const MapView = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-full min-h-[200px] bg-muted flex items-center justify-center rounded-xl">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      <div className="w-full h-full min-h-[200px] bg-parchment flex items-center justify-center rounded-2xl">
+        <Loader2 className="h-6 w-6 animate-spin text-terracotta" />
       </div>
     ),
   }
@@ -68,17 +68,17 @@ function ReviewCard({ review }: { review: Review }) {
   const [helpful, setHelpful] = useState(false);
 
   return (
-    <Card className="overflow-hidden">
+    <div className="card-storybook overflow-hidden">
       <CardContent className="p-5">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-gradient-hero flex items-center justify-center flex-shrink-0 border border-border">
             {review.user?.avatar_url ? (
               <Image
                 src={review.user.avatar_url}
                 alt={review.user.full_name || "User"}
-                width={40}
-                height={40}
-                className="rounded-full object-cover"
+                width={44}
+                height={44}
+                className="rounded-xl object-cover"
               />
             ) : (
               <span className="text-lg font-semibold text-muted-foreground">
@@ -98,13 +98,13 @@ function ReviewCard({ review }: { review: Review }) {
                   })}
                 </p>
               </div>
-              <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-lg">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span className="font-semibold">{review.rating}</span>
+              <div className="flex items-center gap-1 bg-honey/10 text-honey px-2.5 py-1 rounded-full">
+                <Star className="h-4 w-4 fill-honey" />
+                <span className="font-semibold text-sm">{review.rating}</span>
               </div>
             </div>
             {review.title && (
-              <h4 className="font-semibold mt-2 mb-1">{review.title}</h4>
+              <h4 className="font-display font-semibold mt-2 mb-1">{review.title}</h4>
             )}
             <p className="text-muted-foreground">{review.content}</p>
             {review.with_children_ages && review.with_children_ages.length > 0 && (
@@ -113,7 +113,7 @@ function ReviewCard({ review }: { review: Review }) {
               </p>
             )}
             {review.is_verified_visit && (
-              <Badge variant="outline" className="mt-2">
+              <Badge className="mt-2 badge-soft badge-sage">
                 <CheckCircle2 className="h-3 w-3 mr-1" />
                 Verified Visit
               </Badge>
@@ -121,8 +121,8 @@ function ReviewCard({ review }: { review: Review }) {
             <div className="flex items-center gap-4 mt-4">
               <button
                 onClick={() => setHelpful(!helpful)}
-                className={`flex items-center gap-1.5 text-sm ${
-                  helpful ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                className={`flex items-center gap-1.5 text-sm transition-colors ${
+                  helpful ? "text-terracotta" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <ThumbsUp className={`h-4 w-4 ${helpful ? "fill-current" : ""}`} />
@@ -132,7 +132,7 @@ function ReviewCard({ review }: { review: Review }) {
           </div>
         </div>
       </CardContent>
-    </Card>
+    </div>
   );
 }
 
@@ -235,19 +235,23 @@ export default function PlaceDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-terracotta" />
       </div>
     );
   }
 
   if (!place) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <MapPin className="h-16 w-16 text-muted-foreground" />
-        <h1 className="text-2xl font-bold">Place not found</h1>
-        <p className="text-muted-foreground">The place you&apos;re looking for doesn&apos;t exist.</p>
-        <Button onClick={() => router.push("/places")}>
+      <div className="min-h-screen bg-gradient-hero flex flex-col items-center justify-center gap-6 px-4">
+        <div className="w-20 h-20 rounded-2xl bg-parchment flex items-center justify-center">
+          <MapPin className="h-10 w-10 text-muted-foreground" />
+        </div>
+        <div className="text-center">
+          <h1 className="text-2xl font-display font-semibold mb-2">Place not found</h1>
+          <p className="text-muted-foreground">The place you&apos;re looking for doesn&apos;t exist.</p>
+        </div>
+        <Button onClick={() => router.push("/places")} className="btn-secondary">
           <ChevronLeft className="h-4 w-4 mr-2" />
           Back to Places
         </Button>
@@ -270,17 +274,17 @@ export default function PlaceDetailPage() {
   const primaryImage = place.images?.find((img) => img.is_primary) || place.images?.[0];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-cream">
       {/* Back Button */}
       <div className="container mx-auto px-4 py-4">
-        <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+        <Button variant="ghost" onClick={() => router.back()} className="rounded-full hover:bg-parchment">
           <ChevronLeft className="h-4 w-4 mr-2" />
           Back
         </Button>
       </div>
 
       {/* Hero Section */}
-      <div className="relative h-64 md:h-96 bg-muted">
+      <div className="relative h-64 md:h-96 bg-gradient-hero">
         {place.images && place.images.length > 0 ? (
           <>
             <Image
@@ -296,10 +300,10 @@ export default function PlaceDetailPage() {
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`w-2 h-2 rounded-full transition-all ${
+                    className={`h-2 rounded-full transition-all ${
                       idx === activeImageIndex
                         ? "bg-white w-6"
-                        : "bg-white/50 hover:bg-white/75"
+                        : "bg-white/50 hover:bg-white/75 w-2"
                     }`}
                   />
                 ))}
@@ -308,10 +312,10 @@ export default function PlaceDetailPage() {
           </>
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <MapPin className="h-20 w-20 text-muted-foreground" />
+            <MapPin className="h-20 w-20 text-terracotta/20" />
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent" />
 
         {/* Quick Actions */}
         <div className="absolute top-4 right-4 flex gap-2">
@@ -320,15 +324,15 @@ export default function PlaceDetailPage() {
             size="icon"
             onClick={toggleFavorite}
             disabled={favoriteLoading}
-            className="bg-white/90 hover:bg-white"
+            className="bg-card/90 hover:bg-card rounded-xl shadow-soft"
           >
-            <Heart className={`h-5 w-5 ${isFavorite ? "fill-red-500 text-red-500" : ""}`} />
+            <Heart className={`h-5 w-5 ${isFavorite ? "fill-terracotta text-terracotta" : ""}`} />
           </Button>
           <Button
             variant="secondary"
             size="icon"
             onClick={handleShare}
-            className="bg-white/90 hover:bg-white"
+            className="bg-card/90 hover:bg-card rounded-xl shadow-soft"
           >
             <Share2 className="h-5 w-5" />
           </Button>
@@ -336,7 +340,7 @@ export default function PlaceDetailPage() {
 
         {/* Verified Badge */}
         {place.is_verified && (
-          <div className="absolute top-4 left-4 bg-accent text-accent-foreground px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
+          <div className="absolute top-4 left-4 bg-sage text-white px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5 shadow-soft">
             <CheckCircle2 className="h-4 w-4" />
             Verified
           </div>
@@ -349,26 +353,26 @@ export default function PlaceDetailPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Header Card */}
-            <Card className="overflow-hidden">
-              <CardContent className="p-6">
+            <div className="card-storybook overflow-hidden">
+              <CardContent className="p-6 md:p-8">
                 <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                   <div>
-                    <h1 className="text-2xl md:text-3xl font-bold mb-2">{place.name}</h1>
+                    <h1 className="text-2xl md:text-3xl font-display font-semibold mb-2">{place.name}</h1>
                     <div className="flex items-center gap-4 text-muted-foreground">
                       <span className="capitalize">{place.category}</span>
                       {place.price_range && (
                         <>
-                          <span>•</span>
+                          <span>·</span>
                           <span>{place.price_range}</span>
                         </>
                       )}
                     </div>
                   </div>
                   {place.average_rating > 0 && (
-                    <div className="flex items-center gap-2 bg-yellow-50 px-4 py-2 rounded-xl">
-                      <Star className="h-6 w-6 fill-yellow-400 text-yellow-400" />
+                    <div className="flex items-center gap-3 bg-honey/10 px-4 py-2.5 rounded-2xl">
+                      <Star className="h-6 w-6 fill-honey text-honey" />
                       <div>
-                        <span className="text-2xl font-bold">{place.average_rating.toFixed(1)}</span>
+                        <span className="text-2xl font-display font-semibold">{place.average_rating.toFixed(1)}</span>
                         <p className="text-sm text-muted-foreground">{place.review_count} reviews</p>
                       </div>
                     </div>
@@ -376,7 +380,7 @@ export default function PlaceDetailPage() {
                 </div>
 
                 <p className="flex items-start gap-2 text-muted-foreground mb-4">
-                  <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5 text-terracotta" />
                   <span>
                     {place.address}, {place.city}, {place.state} {place.zip_code}
                   </span>
@@ -391,6 +395,7 @@ export default function PlaceDetailPage() {
                     <Badge
                       key={badge.key}
                       variant={badge.color as "changing" | "highchair" | "stroller" | "family" | "quiet" | "secondary"}
+                      className="rounded-full"
                     >
                       <badge.icon className="h-3.5 w-3.5 mr-1.5" />
                       {badge.label}
@@ -398,24 +403,28 @@ export default function PlaceDetailPage() {
                   ))}
                 </div>
               </CardContent>
-            </Card>
+            </div>
 
             {/* Tabs for Details */}
             <Tabs defaultValue="amenities" className="w-full">
-              <TabsList className="w-full justify-start">
-                <TabsTrigger value="amenities">Amenities</TabsTrigger>
-                <TabsTrigger value="reviews">Reviews ({place.review_count})</TabsTrigger>
+              <TabsList className="w-full justify-start bg-parchment rounded-full p-1">
+                <TabsTrigger value="amenities" className="rounded-full data-[state=active]:bg-card data-[state=active]:shadow-soft">
+                  Amenities
+                </TabsTrigger>
+                <TabsTrigger value="reviews" className="rounded-full data-[state=active]:bg-card data-[state=active]:shadow-soft">
+                  Reviews ({place.review_count})
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="amenities" className="mt-4">
-                <Card>
-                  <CardContent className="p-6">
+                <div className="card-storybook">
+                  <CardContent className="p-6 md:p-8">
                     <div className="grid md:grid-cols-2 gap-6">
                       {/* Changing Station Details */}
                       {place.amenities?.changing_station?.available && (
                         <div className="space-y-2">
-                          <h3 className="font-semibold flex items-center gap-2">
-                            <Baby className="h-5 w-5 text-primary" />
+                          <h3 className="font-display font-semibold flex items-center gap-2">
+                            <Baby className="h-5 w-5 text-terracotta" />
                             Changing Station
                           </h3>
                           <div className="pl-7 space-y-1 text-sm text-muted-foreground">
@@ -436,8 +445,8 @@ export default function PlaceDetailPage() {
                       {/* Noise Level */}
                       {place.amenities?.noise_level && place.amenities.noise_level !== "unknown" && (
                         <div className="space-y-2">
-                          <h3 className="font-semibold flex items-center gap-2">
-                            <Volume2 className="h-5 w-5 text-primary" />
+                          <h3 className="font-display font-semibold flex items-center gap-2">
+                            <Volume2 className="h-5 w-5 text-plum" />
                             Noise Level
                           </h3>
                           <div className="pl-7 space-y-1 text-sm text-muted-foreground">
@@ -450,8 +459,8 @@ export default function PlaceDetailPage() {
                       {/* Parking */}
                       {place.amenities?.parking?.available && (
                         <div className="space-y-2">
-                          <h3 className="font-semibold flex items-center gap-2">
-                            <Car className="h-5 w-5 text-primary" />
+                          <h3 className="font-display font-semibold flex items-center gap-2">
+                            <Car className="h-5 w-5 text-sage" />
                             Parking
                           </h3>
                           <div className="pl-7 space-y-1 text-sm text-muted-foreground">
@@ -460,7 +469,7 @@ export default function PlaceDetailPage() {
                               {place.amenities.parking.type.map((t) => t.charAt(0).toUpperCase() + t.slice(1)).join(", ")}
                             </p>
                             {place.amenities.parking.stroller_accessible && (
-                              <p className="text-success">Stroller accessible</p>
+                              <p className="text-sage font-medium">Stroller accessible</p>
                             )}
                           </div>
                         </div>
@@ -468,7 +477,7 @@ export default function PlaceDetailPage() {
 
                       {/* All Amenities List */}
                       <div className="md:col-span-2 space-y-2">
-                        <h3 className="font-semibold mb-3">All Amenities</h3>
+                        <h3 className="font-display font-semibold mb-3">All Amenities</h3>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                           {Object.entries(amenityDetails).map(([key, value]) => {
                             const isAvailable =
@@ -478,14 +487,14 @@ export default function PlaceDetailPage() {
                             return (
                               <div
                                 key={key}
-                                className={`flex items-center gap-2 p-2 rounded-lg ${
+                                className={`flex items-center gap-2 p-3 rounded-xl transition-colors ${
                                   isAvailable
-                                    ? "bg-success/10 text-success"
-                                    : "bg-muted text-muted-foreground"
+                                    ? "bg-sage/10 text-sage border border-sage/20"
+                                    : "bg-parchment text-muted-foreground border border-border"
                                 }`}
                               >
                                 <value.icon className="h-4 w-4" />
-                                <span className="text-sm">{value.label}</span>
+                                <span className="text-sm font-medium">{value.label}</span>
                               </div>
                             );
                           })}
@@ -493,13 +502,13 @@ export default function PlaceDetailPage() {
                       </div>
                     </div>
                   </CardContent>
-                </Card>
+                </div>
               </TabsContent>
 
               <TabsContent value="reviews" className="mt-4 space-y-4">
                 {user && (
                   <Link href={`/places/${place.slug}/review`}>
-                    <Button className="w-full md:w-auto">
+                    <Button className="btn-primary w-full md:w-auto">
                       Write a Review
                     </Button>
                   </Link>
@@ -509,22 +518,24 @@ export default function PlaceDetailPage() {
                     <ReviewCard key={review.id} review={review} />
                   ))
                 ) : (
-                  <Card className="p-8 text-center">
-                    <Star className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="font-semibold text-lg mb-2">No reviews yet</h3>
-                    <p className="text-muted-foreground mb-4">
+                  <div className="card-storybook p-12 text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-honey/10 flex items-center justify-center mx-auto mb-4">
+                      <Star className="h-8 w-8 text-honey" />
+                    </div>
+                    <h3 className="font-display font-semibold text-lg mb-2">No reviews yet</h3>
+                    <p className="text-muted-foreground mb-6">
                       Be the first to share your experience at this place!
                     </p>
                     {user ? (
                       <Link href={`/places/${place.slug}/review`}>
-                        <Button>Write a Review</Button>
+                        <Button className="btn-primary">Write a Review</Button>
                       </Link>
                     ) : (
                       <Link href={`/auth/login?redirect=/places/${place.slug}/review`}>
-                        <Button>Sign in to Review</Button>
+                        <Button className="btn-primary">Sign in to Review</Button>
                       </Link>
                     )}
-                  </Card>
+                  </div>
                 )}
               </TabsContent>
             </Tabs>
@@ -533,16 +544,18 @@ export default function PlaceDetailPage() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Contact Card */}
-            <Card>
+            <div className="card-storybook">
               <CardContent className="p-6 space-y-4">
-                <h3 className="font-semibold text-lg">Contact & Hours</h3>
+                <h3 className="font-display font-semibold text-lg">Contact & Hours</h3>
 
                 {place.phone && (
                   <a
                     href={`tel:${place.phone}`}
-                    className="flex items-center gap-3 text-muted-foreground hover:text-foreground"
+                    className="flex items-center gap-3 text-muted-foreground hover:text-terracotta transition-colors"
                   >
-                    <Phone className="h-5 w-5" />
+                    <div className="w-10 h-10 rounded-xl bg-terracotta/10 flex items-center justify-center">
+                      <Phone className="h-5 w-5 text-terracotta" />
+                    </div>
                     <span>{place.phone}</span>
                   </a>
                 )}
@@ -552,20 +565,24 @@ export default function PlaceDetailPage() {
                     href={place.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-muted-foreground hover:text-foreground"
+                    className="flex items-center gap-3 text-muted-foreground hover:text-terracotta transition-colors"
                   >
-                    <Globe className="h-5 w-5" />
+                    <div className="w-10 h-10 rounded-xl bg-sky/10 flex items-center justify-center">
+                      <Globe className="h-5 w-5 text-sky" />
+                    </div>
                     <span className="truncate">Visit Website</span>
                   </a>
                 )}
 
                 {place.hours ? (
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <div className="flex items-center gap-3 text-muted-foreground">
-                      <Clock className="h-5 w-5" />
-                      <span>Hours</span>
+                      <div className="w-10 h-10 rounded-xl bg-plum/10 flex items-center justify-center">
+                        <Clock className="h-5 w-5 text-plum" />
+                      </div>
+                      <span className="font-medium">Hours</span>
                     </div>
-                    <div className="pl-8 text-sm space-y-1">
+                    <div className="pl-[52px] text-sm space-y-1">
                       {Object.entries(place.hours).map(([day, hours]) => (
                         <div key={day} className="flex justify-between">
                           <span className="capitalize">{day}</span>
@@ -582,12 +599,14 @@ export default function PlaceDetailPage() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-3 text-muted-foreground">
-                    <Clock className="h-5 w-5" />
+                    <div className="w-10 h-10 rounded-xl bg-parchment flex items-center justify-center">
+                      <Clock className="h-5 w-5" />
+                    </div>
                     <span>Hours not available</span>
                   </div>
                 )}
 
-                <Button className="w-full" variant="outline" asChild>
+                <Button className="btn-secondary w-full" asChild>
                   <a
                     href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
                       `${place.address}, ${place.city}, ${place.state} ${place.zip_code}`
@@ -600,10 +619,10 @@ export default function PlaceDetailPage() {
                   </a>
                 </Button>
               </CardContent>
-            </Card>
+            </div>
 
             {/* Map Card */}
-            <Card className="overflow-hidden">
+            <div className="card-storybook overflow-hidden">
               <div className="h-48">
                 <MapView
                   places={[place]}
@@ -611,7 +630,7 @@ export default function PlaceDetailPage() {
                   zoom={14}
                 />
               </div>
-            </Card>
+            </div>
           </div>
         </div>
       </div>

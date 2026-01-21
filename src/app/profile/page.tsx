@@ -14,7 +14,6 @@ import {
   MapPin,
   Star,
   Heart,
-  Settings,
   Loader2,
   Edit,
   Baby,
@@ -185,37 +184,41 @@ export default function ProfilePage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-terracotta" />
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-4">
-        <User className="h-16 w-16 text-muted-foreground" />
-        <h1 className="text-2xl font-bold text-center">Sign in to view your profile</h1>
-        <p className="text-muted-foreground text-center">
-          Access your saved places, reviews, and family settings.
-        </p>
+      <div className="min-h-screen bg-gradient-hero flex flex-col items-center justify-center gap-6 px-4">
+        <div className="w-20 h-20 rounded-full bg-parchment flex items-center justify-center">
+          <User className="h-10 w-10 text-muted-foreground" />
+        </div>
+        <div className="text-center">
+          <h1 className="text-2xl font-display font-semibold mb-2">Sign in to view your profile</h1>
+          <p className="text-muted-foreground">
+            Access your saved places, reviews, and family settings.
+          </p>
+        </div>
         <Link href="/auth/login?redirect=/profile">
-          <Button>Sign In</Button>
+          <Button className="btn-primary">Sign In</Button>
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background py-8">
+    <div className="min-h-screen bg-cream py-8">
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Profile Header */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
+        <div className="card-storybook mb-8">
+          <CardContent className="p-6 md:p-8">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
               {/* Avatar */}
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+                <div className="w-24 h-24 rounded-2xl bg-gradient-hero flex items-center justify-center overflow-hidden border-2 border-border">
                   {profile?.avatar_url ? (
                     <Image
                       src={profile.avatar_url}
@@ -229,7 +232,7 @@ export default function ProfilePage() {
                   )}
                 </div>
                 {profile?.is_premium && (
-                  <div className="absolute -bottom-1 -right-1 bg-golden text-charcoal p-1.5 rounded-full">
+                  <div className="absolute -bottom-1 -right-1 bg-honey text-charcoal p-1.5 rounded-full shadow-soft">
                     <Crown className="h-4 w-4" />
                   </div>
                 )}
@@ -241,26 +244,28 @@ export default function ProfilePage() {
                   <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="fullName">Full Name</Label>
+                        <Label htmlFor="fullName" className="font-medium">Full Name</Label>
                         <Input
                           id="fullName"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
+                          className="rounded-xl"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="familyName">Family Name (optional)</Label>
+                        <Label htmlFor="familyName" className="font-medium">Family Name (optional)</Label>
                         <Input
                           id="familyName"
                           placeholder="The Smiths"
                           value={familyName}
                           onChange={(e) => setFamilyName(e.target.value)}
+                          className="rounded-xl"
                         />
                       </div>
                     </div>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="numChildren">Number of Children</Label>
+                        <Label htmlFor="numChildren" className="font-medium">Number of Children</Label>
                         <Input
                           id="numChildren"
                           type="number"
@@ -268,13 +273,14 @@ export default function ProfilePage() {
                           max={20}
                           value={numChildren}
                           onChange={(e) => setNumChildren(parseInt(e.target.value) || 0)}
+                          className="rounded-xl"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="strollerType">Stroller Type</Label>
+                        <Label htmlFor="strollerType" className="font-medium">Stroller Type</Label>
                         <select
                           id="strollerType"
-                          className="w-full h-10 px-3 rounded-lg border bg-background"
+                          className="w-full h-10 px-3 rounded-xl border bg-card focus:outline-none focus:ring-2 focus:ring-terracotta/20"
                           value={strollerType}
                           onChange={(e) => setStrollerType(e.target.value as StrollerType)}
                         >
@@ -289,10 +295,11 @@ export default function ProfilePage() {
                       </div>
                     </div>
                     <div className="flex gap-3">
-                      <Button onClick={handleSaveProfile} loading={isSaving}>
+                      <Button onClick={handleSaveProfile} className="btn-primary" disabled={isSaving}>
+                        {isSaving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
                         Save Changes
                       </Button>
-                      <Button variant="outline" onClick={() => setIsEditing(false)}>
+                      <Button variant="outline" onClick={() => setIsEditing(false)} className="rounded-full">
                         Cancel
                       </Button>
                     </div>
@@ -300,11 +307,11 @@ export default function ProfilePage() {
                 ) : (
                   <>
                     <div className="flex items-center gap-3 mb-2">
-                      <h1 className="text-2xl font-bold">
+                      <h1 className="text-2xl font-display font-semibold">
                         {profile?.full_name || "Unnamed User"}
                       </h1>
                       {profile?.is_premium && (
-                        <Badge variant="secondary">
+                        <Badge className="badge-soft badge-honey">
                           <Crown className="h-3 w-3 mr-1" />
                           Premium
                         </Badge>
@@ -314,18 +321,18 @@ export default function ProfilePage() {
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                       {familyProfile?.family_name && (
                         <span className="flex items-center gap-1.5">
-                          <Users className="h-4 w-4" />
+                          <Users className="h-4 w-4 text-terracotta" />
                           {familyProfile.family_name}
                         </span>
                       )}
                       {familyProfile?.num_children && familyProfile.num_children > 0 && (
                         <span className="flex items-center gap-1.5">
-                          <Baby className="h-4 w-4" />
+                          <Baby className="h-4 w-4 text-sage" />
                           {familyProfile.num_children} {familyProfile.num_children === 1 ? "child" : "children"}
                         </span>
                       )}
                       <span className="flex items-center gap-1.5">
-                        <Calendar className="h-4 w-4" />
+                        <Calendar className="h-4 w-4 text-plum" />
                         Joined {new Date(profile?.created_at || "").toLocaleDateString("en-US", { month: "long", year: "numeric" })}
                       </span>
                     </div>
@@ -336,26 +343,42 @@ export default function ProfilePage() {
               {/* Actions */}
               {!isEditing && (
                 <div className="flex gap-2">
-                  <Button variant="outline" size="icon" onClick={() => setIsEditing(true)}>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setIsEditing(true)}
+                    className="rounded-xl hover:border-terracotta/30"
+                  >
                     <Edit className="h-4 w-4" />
                   </Button>
-                  <Button variant="outline" size="icon" onClick={handleSignOut}>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={handleSignOut}
+                    className="rounded-xl hover:border-destructive/30 hover:text-destructive"
+                  >
                     <LogOut className="h-4 w-4" />
                   </Button>
                 </div>
               )}
             </div>
           </CardContent>
-        </Card>
+        </div>
 
         {/* Tabs */}
         <Tabs defaultValue="favorites" className="w-full">
-          <TabsList className="w-full justify-start mb-6">
-            <TabsTrigger value="favorites" className="flex items-center gap-2">
+          <TabsList className="w-full justify-start mb-6 bg-parchment rounded-full p-1">
+            <TabsTrigger
+              value="favorites"
+              className="flex items-center gap-2 rounded-full data-[state=active]:bg-card data-[state=active]:shadow-soft"
+            >
               <Heart className="h-4 w-4" />
               Saved Places ({favorites.length})
             </TabsTrigger>
-            <TabsTrigger value="reviews" className="flex items-center gap-2">
+            <TabsTrigger
+              value="reviews"
+              className="flex items-center gap-2 rounded-full data-[state=active]:bg-card data-[state=active]:shadow-soft"
+            >
               <Star className="h-4 w-4" />
               My Reviews ({reviews.length})
             </TabsTrigger>
@@ -375,19 +398,21 @@ export default function ProfilePage() {
                 ))}
               </div>
             ) : (
-              <Card className="p-12 text-center">
-                <Heart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="font-semibold text-lg mb-2">No saved places yet</h3>
-                <p className="text-muted-foreground mb-4">
+              <div className="card-storybook p-12 text-center">
+                <div className="w-16 h-16 rounded-2xl bg-terracotta/10 flex items-center justify-center mx-auto mb-4">
+                  <Heart className="h-8 w-8 text-terracotta" />
+                </div>
+                <h3 className="font-display font-semibold text-lg mb-2">No saved places yet</h3>
+                <p className="text-muted-foreground mb-6">
                   Start exploring and save your favorite baby-friendly spots!
                 </p>
                 <Link href="/places">
-                  <Button>
+                  <Button className="btn-primary">
                     <MapPin className="h-4 w-4 mr-2" />
                     Explore Places
                   </Button>
                 </Link>
-              </Card>
+              </div>
             )}
           </TabsContent>
 
@@ -395,13 +420,13 @@ export default function ProfilePage() {
             {reviews.length > 0 ? (
               <div className="space-y-4">
                 {reviews.map((review) => (
-                  <Card key={review.id}>
+                  <div key={review.id} className="card-storybook">
                     <CardContent className="p-5">
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <Link
                             href={`/places/${(review as unknown as { places?: { slug?: string } }).places?.slug}`}
-                            className="font-semibold hover:text-primary transition-colors"
+                            className="font-display font-semibold hover:text-terracotta transition-colors"
                           >
                             {(review as unknown as { places?: { name?: string } }).places?.name}
                           </Link>
@@ -413,9 +438,9 @@ export default function ProfilePage() {
                             })}
                           </p>
                         </div>
-                        <div className="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-semibold">{review.rating}</span>
+                        <div className="flex items-center gap-1 bg-honey/10 text-honey px-2.5 py-1 rounded-full">
+                          <Star className="h-4 w-4 fill-honey" />
+                          <span className="font-semibold text-sm">{review.rating}</span>
                         </div>
                       </div>
                       {review.title && (
@@ -423,23 +448,25 @@ export default function ProfilePage() {
                       )}
                       <p className="text-muted-foreground line-clamp-3">{review.content}</p>
                     </CardContent>
-                  </Card>
+                  </div>
                 ))}
               </div>
             ) : (
-              <Card className="p-12 text-center">
-                <Star className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="font-semibold text-lg mb-2">No reviews yet</h3>
-                <p className="text-muted-foreground mb-4">
+              <div className="card-storybook p-12 text-center">
+                <div className="w-16 h-16 rounded-2xl bg-honey/10 flex items-center justify-center mx-auto mb-4">
+                  <Star className="h-8 w-8 text-honey" />
+                </div>
+                <h3 className="font-display font-semibold text-lg mb-2">No reviews yet</h3>
+                <p className="text-muted-foreground mb-6">
                   Share your experiences to help other families!
                 </p>
                 <Link href="/places">
-                  <Button>
+                  <Button className="btn-primary">
                     <MapPin className="h-4 w-4 mr-2" />
                     Find a Place to Review
                   </Button>
                 </Link>
-              </Card>
+              </div>
             )}
           </TabsContent>
         </Tabs>
